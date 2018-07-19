@@ -1,0 +1,10 @@
+---
+- name: add 00-default-vhost.conf
+  copy:
+    src: files/00-default-vhost.conf
+    dest: /etc/nginx/conf.d/00-default-vhost.conf
+  tags:
+    - nginx
+
+- name: restart nginx
+  command: nginx -s reload

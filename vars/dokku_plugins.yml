@@ -1,0 +1,3 @@
+---
+dokku_plugins:
+  - https://github.com/dokku/dokku-letsencrypt.git

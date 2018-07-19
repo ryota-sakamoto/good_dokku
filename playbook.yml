@@ -1,0 +1,13 @@
+---
+- hosts: servers
+  user: root
+
+  vars_files:
+    - vars/vars.yml
+    - vars/dokku_plugins.yml
+
+  tasks:
+    - include: tasks/before.yml
+    - include: tasks/dokku.yml
+    - include: tasks/install_plugins.yml
+    - include: tasks/nginx.yml

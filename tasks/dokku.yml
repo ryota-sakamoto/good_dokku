@@ -1,0 +1,32 @@
+---
+- name: install prerequisites
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+  with_items:
+    - apt-transport-https
+
+- name: get docker sh
+  get_url:
+    url: https://get.docker.com/
+    dest: /tmp/docker.sh
+
+- name: install docker
+  command: sh /tmp/docker.sh
+
+- name: get gpg.key
+  apt_key:
+    url: https://packagecloud.io/gpg.key
+
+- name: add apt source
+  shell: |
+    OS_ID="$(lsb_release -cs 2> /dev/null || echo "trusty")";
+    echo "trusty utopic vivid wily xenial yakkety zesty artful bionic" | grep -q "$OS_ID" || OS_ID="trusty";
+    echo "deb https://packagecloud.io/dokku/dokku/ubuntu/ ${OS_ID} main" | sudo tee /etc/apt/sources.list.d/dokku.list;
+
+- name: install dokku
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+  with_items:
+    - dokku

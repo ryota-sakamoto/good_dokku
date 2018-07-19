@@ -1,0 +1,7 @@
+---
+- name: install dependcies
+  command: dokku plugin:install-dependencies --core
+
+- name: install plugins
+  command: dokku plugin:install "{{ item }}"
+  with_items: "{{ dokku_plugins }}"
