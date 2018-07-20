@@ -1,2 +1,5 @@
 ---
 hostname: dokku.me
+users:
+  - name: name
+    key_url: https://github.com/name.keys

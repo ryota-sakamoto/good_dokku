@@ -1,0 +1,36 @@
+---
+- name: Add user
+  user:
+    name: "{{ item.name }}"
+    groups: 
+      - dokku
+  with_items: "{{ users }}"
+  tags:
+    - users
+
+- name: Create .ssh dir
+  file:
+    path: "/home/{{ item.name }}/.ssh"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    state: directory
+    mode: 0700
+  with_items: "{{ users }}"
+  tags:
+    - users
+
+- name: Add pub key
+  get_url:
+    url: "{{ item.key_url }}"
+    dest: "/home/{{ item.name }}/.ssh/authorized_keys"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: 0600
+  with_items: "{{ users }}"
+  tags:
+    - users
+
+- name: Add sudo group(dokku)
+  shell: echo "%dokku ALL=(ALL:ALL) NOPASSWD{{':'}}SETENV{{':'}} /usr/bin/dokku" >> /etc/sudoers
+  tags:
+    - users
