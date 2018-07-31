@@ -30,6 +30,21 @@
   tags:
     - users
 
+- name: Copy add_keys.sh
+  copy:
+    src: files/add_keys.sh
+    dest: /tmp/add_keys.sh
+  tags:
+    - users
+
+- name: Add keys
+  shell: |
+    bash /tmp/add_keys.sh {{ item.name }} /home/{{ item.name }}/.ssh/authorized_keys
+  with_items: "{{ users }}"
+  tags:
+    - users
+
+
 - name: Add sudo group(dokku)
   shell: echo "%dokku ALL=(ALL:ALL) NOPASSWD{{':'}}SETENV{{':'}} /usr/bin/dokku" >> /etc/sudoers
   tags:
